@@ -31,7 +31,7 @@ namespace NameHistoryTest
 
         public class Query
         {
-            private const string URL_USER = "https://api.mojang.com/users/profiles/minecraft/Adiber";
+            private const string URL_USER = "https://api.mojang.com/users/profiles/minecraft/WisecoHD";
             private const string URL_HISTORY = "https://api.mojang.com/user/profiles/{0}/names";
 
             static void Main(string[] args)
@@ -52,11 +52,22 @@ namespace NameHistoryTest
                     {
                         var user = response.Content.ReadAsAsync<User>().Result;
 
+                        if(user == null)
+                        {
+                            Console.WriteLine("No User found");
+                            return;
+                        }
+
                         Console.WriteLine("{0}", user.name);
 
                         var res = client.GetStringAsync(new Uri(string.Format(URL_HISTORY, user.id))).Result;
 
                         var history = parse(res);
+
+                        foreach(var h in history)
+                        {
+                            Console.WriteLine("{0} - {1}", h.name, h.changedToAt);
+                        }
 
                     }
                     else

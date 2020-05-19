@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OQ.NameHistory
 {
-    [Plugin(1, "NameHistory", "Get the name history of Minecraft Players")]
+    [Plugin(1, "NameHistory", "Get the name history of Minecraft Players", "Adiber.at")]
     public class PluginCore : IStartPlugin
     {
         public override void OnLoad(int version, int subversion, int buildversion)
@@ -16,10 +16,16 @@ namespace OQ.NameHistory
             this.Setting.Add(new StringListSetting("Banned", "Who is not allowed to use..", ""));
         }
 
+
         public override void OnStart()
         {
+            Console.WriteLine("NameHistory Bot Loaded!");
+            RegisterTask(new Tasks.ChatTask(Setting.At(0).Get<string>().Split(new char[] { ',' })));
+        }
 
-            RegisterTask(new Tasks.ChatTask());
+        public override void OnDisable()
+        {
+            Console.WriteLine("NameHistory Bot Disabled!");
         }
 
     }
